@@ -7,7 +7,7 @@ inputs:
 outputs:
   action:
     description: 'The job from input command'
-  build-options:
+  build_options:
     description: 'Build options'
 runs:
   using: 'node16'
