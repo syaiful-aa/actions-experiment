@@ -2858,7 +2858,7 @@ try {
     }
   }
   
-  core.setOutput("build-options", JSON.stringify(options));
+  core.setOutput("build_options", JSON.stringify(options));
 } catch (error) {
   core.setFailed(error.message);
 }
@@ -2883,18 +2883,18 @@ function mapOption(option) {
   }
 
   const mode = options[1];
-  const allowedMode = ['--debug', '--release']
+  const allowedMode = ['debug', 'release']
   if (!allowedMode.includes(mode)) {
     return null
   }
 
   const buildOption = `${artifact} ${flavor} ${mode}`;
   const blackListOptions = [
-    'appbundle dev --debug',
-    'appbundle dev --release',
-    'appbundle staging--debug',
-    'appbundle staging--release',
-    'appbundle production --debug'
+    'appbundle dev debug',
+    'appbundle dev release',
+    'appbundle staging debug',
+    'appbundle staging release',
+    'appbundle production debug'
   ]
   if (blackListOptions.includes(buildOption)) {
     return null
