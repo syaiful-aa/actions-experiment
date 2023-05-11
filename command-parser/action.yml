@@ -1,0 +1,14 @@
+name: 'Command Parser'
+description: 'Parse command from PR comment'
+inputs:
+  command:
+    description: 'command from PR comment'
+    required: true
+outputs:
+  action:
+    description: 'The job from input command'
+  build-options:
+    description: 'Build options'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
