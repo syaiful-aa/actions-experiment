@@ -17,7 +17,7 @@ try {
     return;
   }
 
-  const options = command.replace(action, '').split(',').map(mapOption)
+  const options = command.replace(action, '').split(',').map(mapOption).filter(e => e)
   if (action === '/build' && options.length === 0) {
     throw {
       'message': 'none of the build options are valid'
