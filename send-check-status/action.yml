@@ -32,7 +32,7 @@ runs:
           echo "job_description='Job completed'" >> $GITHUB_OUTPUT
         else
           echo "job_state=failure" >> $GITHUB_OUTPUT
-          echo "job_description='Job failed'" >> $GITHUB_OUTPUT
+          echo "job_description=Job failed" >> $GITHUB_OUTPUT
         fi
       shell: bash
 
