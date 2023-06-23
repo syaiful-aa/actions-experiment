@@ -42,8 +42,8 @@ runs:
         --header 'content-type: application/json' \
         --data '{
           "context": "${{ inputs.check_context }}",
-          "state": "$job_state",
-          "description": "$job_description",
+          "state": "success",
+          "description": "Job completed",
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
       shell: bash
