@@ -20,6 +20,12 @@ inputs:
     description: 'status to be sent'
     required: true
     default: true
+  success_message:
+    description: 'success message to be sent'
+    default: 'Job completed'
+  failure_message:
+    description: 'failure message to be sent'
+    default: 'Job failed'
     
 runs:
   using: "composite"
@@ -29,10 +35,10 @@ runs:
       run: |
         if [[ ${{ inputs.is_success }} = true ]]; then
           echo "job_state=success" >> $GITHUB_OUTPUT
-          echo "job_description=Job completed" >> $GITHUB_OUTPUT
+          echo "job_description=${{ inputs.success_message }}" >> $GITHUB_OUTPUT
         else
           echo "job_state=failure" >> $GITHUB_OUTPUT
-          echo "job_description=Job failed" >> $GITHUB_OUTPUT
+          echo "job_description=${{ inputs.failure_message }}" >> $GITHUB_OUTPUT
         fi
       shell: bash
 
