@@ -24,27 +24,29 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: |
+    - name: set job status
+      id: set-status
+      run: |
         if [[ ${{ inputs.is_success }} = true ]]; then
-          echo "job_state=success" >> $GITHUB_ENV
-          echo "job_description='Job completed'" >> $GITHUB_ENV
+          echo "job_state=success" >> $GITHUB_OUTPUT
+          echo "job_description='Job completed'" >> $GITHUB_OUTPUT
+        else
+          echo "job_state=failure" >> $GITHUB_OUTPUT
+          echo "job_description='Job failed'" >> $GITHUB_OUTPUT
         fi
+      shell: bash
 
-        echo "job state: $job_state" 
-        echo "job description $job_description"
-
+    - name: send status
+      run: |
         curl --request POST \
         --url https://api.github.com/repos/${{ inputs.repository }}/statuses/${{ inputs.sha }} \
         --header 'authorization: Bearer ${{ inputs.token }}' \
         --header 'content-type: application/json' \
         --data '{
           "context": "${{ inputs.check_context }}",
-          "state": "$job_state",
-          "description": "$job_description",
+          "state": "${{ steps.set-status.outputs.job_state }}",
+          "description": "${{ steps.set-status.outputs.job_description }}",
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
       shell: bash
-      env:
-        job_state: 'failure'
-        job_description: 'Job failed'
       
