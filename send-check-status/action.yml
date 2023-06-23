@@ -25,12 +25,9 @@ runs:
   using: "composite"
   steps:
     - run: |
-        job_state='failure'
-        job_description='Job failed'
-        
         if [[ ${{ inputs.is_success }} = true ]]; then
-          job_state='success'
-          job_description='Job completed'          
+          echo "job_state=success" >> $GITHUB_ENV
+          echo "job_description='Job completed'" >> $GITHUB_ENV
         fi
 
         echo "job state: $job_state" 
@@ -42,9 +39,12 @@ runs:
         --header 'content-type: application/json' \
         --data '{
           "context": "${{ inputs.check_context }}",
-          "state": "${job_state}",
-          "description": "${job_description}",
+          "state": "$job_state",
+          "description": "$job_description",
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
       shell: bash
+      env:
+        job_state: 'failure'
+        job_description: 'Job failed'
       
