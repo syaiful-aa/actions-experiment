@@ -26,12 +26,15 @@ runs:
   steps:
     - run: |
         if [[ is_success = true ]]; then
-          job_state="success"
-          job_description="Job completed"
+          job_state='success'
+          job_description='Job completed'
         else
-          job_state="failure"
-          job_description="Job failed"
+          job_state='failure'
+          job_description='Job failed'
         fi
+
+        echo "job state: $job_state" 
+        echo "job description $job_description"
 
         curl --request POST \
         --url https://api.github.com/repos/${{ inputs.repository }}/statuses/${{ inputs.sha }} \
