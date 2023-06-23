@@ -1,0 +1,47 @@
+name: 'Send Check Status'
+description: 'Send check status to commit sha based on action run status'
+inputs:
+  check_context:
+    description: 'check context to be sent'
+    default: 'job_completion'
+  repository:
+    description: 'repository id'
+    required: true
+  sha:
+    description: 'sha of the commit'
+    required: true
+  run_id:
+    description: 'action run id'
+    required: true
+  token:
+    description: 'github token'
+    required: true
+  is_success:
+    description: 'status to be sent'
+    required: true
+    default: true
+    
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        if [[ is_success = true ]]; then
+          job_state="success"
+          job_description="Job completed"
+        else
+          job_state="failure"
+          job_description="Job failed"
+        fi
+
+        curl --request POST \
+        --url https://api.github.com/repos/${{ inputs.repository }}/statuses/${{ inputs.sha }} \
+        --header 'authorization: Bearer ${{ inputs.token }}' \
+        --header 'content-type: application/json' \
+        --data '{
+          "context": "${{ inputs.check_context }}",
+          "state": "$job_state",
+          "description": "$job_description",
+          "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        }'
+      shell: bash
+      
