@@ -25,12 +25,12 @@ runs:
   using: "composite"
   steps:
     - run: |
+        job_state='failure'
+        job_description='Job failed'
+        
         if [[ ${{ inputs.is_success }} = true ]]; then
           job_state='success'
-          job_description='Job completed'
-        else
-          job_state='failure'
-          job_description='Job failed'
+          job_description='Job completed'          
         fi
 
         echo "job state: $job_state" 
