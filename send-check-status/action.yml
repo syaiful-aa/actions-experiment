@@ -4,14 +4,8 @@ inputs:
   check_context:
     description: 'check context to be sent'
     default: 'job_completion'
-  repository:
-    description: 'repository id'
-    required: true
   sha:
     description: 'sha of the commit'
-    required: true
-  run_id:
-    description: 'action run id'
     required: true
   token:
     description: 'github token'
@@ -63,7 +57,7 @@ runs:
     - name: send status
       run: |
         curl --request POST \
-        --url https://api.github.com/repos/${{ inputs.repository }}/statuses/${{ inputs.sha }} \
+        --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ inputs.sha }} \
         --header 'authorization: Bearer ${{ inputs.token }}' \
         --header 'content-type: application/json' \
         --data '{
