@@ -75,6 +75,14 @@ runs:
         }'
       shell: bash
 
+    - name: check params
+      run: |
+        echo "notify_on_failure: ${{inputs.notify_on_failure}} | ${{inputs.notify_on_failure == 'true'}}"
+        echo "event_name: ${{github.event_name}} | ${{github.event_name == 'pull_request'}}"
+        echo "is_success: ${{inputs.is_success}} | ${{inputs.is_success == 'false'}}"
+
+      shell: bash
+
     - name: notify on failure
       if: ${{ inputs.notify_on_failure == 'true' && github.event_name == 'pull_request' && inputs.is_success == 'false' }}
       run: |
