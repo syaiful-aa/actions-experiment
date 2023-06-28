@@ -60,3 +60,8 @@ runs:
       if: ${{ inputs.is_success == false }}
       run: echo "send slack message..."
       shell: bash
+
+    - name: notify on failure
+      if: ${{ inputs.is_success == 'false' }}
+      run: echo "send slack message.........."
+      shell: bash
