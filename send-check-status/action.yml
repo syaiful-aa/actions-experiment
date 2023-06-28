@@ -70,10 +70,31 @@ runs:
 
     - name: notify on failure
       if: ${{ inputs.notify_on_failure == 'true' && inputs.is_success == 'false' }}
-      run: |
-        echo "send slack message.........."
-        echo "Build ${{ inputs.app_version }} failed on ${{ github.event.comment.body }} commands."
-        echo "CI/CD for ${{ inputs.head_ref }} failed on ${{ github.event.comment.body }} commands. you can see the details on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}| Detail Actions>"
-        echo "${{ inputs.head_ref }} → ${{ inputs.base_ref }}"
-        echo "SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}"
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "Hi, <!subteam^S031A5Q1C0Y|@app-engineers> Build ${{ inputs.app_version }} failed on ${{ github.event.comment.body }} commands.",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "text": "*CI/CD for ${{ inputs.head_ref }} failed on ${{ github.event.comment.body }} commands. you can see the details on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}| Detail Actions>",
+                  "type": "mrkdwn"
+                }
+              },
+              {
+                "type": "context",
+                "elements": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "${{ inputs.head_ref }} → ${{ inputs.base_ref }}"
+                  }
+                ]
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
       shell: bash
