@@ -20,12 +20,13 @@ inputs:
   failure_message:
     description: 'failure message to be sent'
     default: 'Job failed'
-
-  # Inputs for notify on failure. All inputs below must be filled in
   notify_on_failure:
     description: 'whether to send a message to slack if the job fails'
     required: false
     default: false
+    
+  # Inputs for notify on failure. 
+  # If notify_on_failure is true, all inputs below must be filled in
   slack_webhook_url:
     description: 'slack webhook url'
     required: false
@@ -38,7 +39,7 @@ inputs:
   base_ref:
     description: 'target branch'
     required: false
-     
+    
 runs:
   using: "composite"
   steps:
@@ -67,7 +68,7 @@ runs:
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
       shell: bash
-
+      
     - name: notify on failure
       if: ${{ inputs.notify_on_failure == 'true' && inputs.is_success == 'false' }}
       uses: slackapi/slack-github-action@v1
