@@ -55,4 +55,8 @@ runs:
           "target_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         }'
       shell: bash
+
+    - name: notify on failure
+      if: ${{ inputs.is_success == false }}
+      run: echo "send slack message..."
       
