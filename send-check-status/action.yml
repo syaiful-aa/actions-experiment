@@ -28,7 +28,6 @@ inputs:
     default: 'Job failed'
 
   # Inputs for notify on failure. All inputs below must be filled in
-  # the step only runs when the event type is a pull_request
   notify_on_failure:
     description: 'whether to send a message to slack if the job fails'
     required: false
@@ -75,16 +74,8 @@ runs:
         }'
       shell: bash
 
-    - name: check params
-      run: |
-        echo "notify_on_failure: ${{inputs.notify_on_failure}} | ${{inputs.notify_on_failure == 'true'}}"
-        echo "event_name: ${{github.event_name}} | ${{github.event_name == 'pull_request'}}"
-        echo "is_success: ${{inputs.is_success}} | ${{inputs.is_success == 'false'}}"
-
-      shell: bash
-
     - name: notify on failure
-      if: ${{ inputs.notify_on_failure == 'true' && github.event_name == 'pull_request' && inputs.is_success == 'false' }}
+      if: ${{ inputs.notify_on_failure == 'true' && inputs.is_success == 'false' }}
       run: |
         echo "send slack message.........."
         echo "Build ${{ inputs.app_version }} failed on ${{ github.event.comment.body }} commands."
