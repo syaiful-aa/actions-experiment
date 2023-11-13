@@ -4,7 +4,7 @@ try {
   const command = core.getInput('command');
 
   const action = command.split(' ')[0];
-  const validActions = ['/test', '/build'];
+  const validActions = ['/test', '/build', '/release', '/patch'];
   if (!validActions.includes(action)) {
     throw {
       'message': 'invalid action'
@@ -18,12 +18,13 @@ try {
   }
 
   const options = command.replace(action, '').split(',').map(mapOption).filter(e => e)
-  if (action === '/build' && options.length === 0) {
+  const argsDependentActions = ['/build', '/release', '/patch'];
+  if (argsDependentActions.includes(action) && options.length === 0) {
     throw {
       'message': 'none of the build options are valid'
     }
   }
-  
+
   core.setOutput("build_options", JSON.stringify(options));
 } catch (error) {
   core.setFailed(error.message);
@@ -49,7 +50,7 @@ function mapOption(option) {
   }
 
   const mode = options[1];
-  const allowedMode = ['debug', 'release']
+  const allowedMode = ['debug', 'release', 'profile']
   if (!allowedMode.includes(mode)) {
     return null
   }
@@ -57,10 +58,13 @@ function mapOption(option) {
   const buildOption = `${artifact} ${flavor} ${mode}`;
   const blackListOptions = [
     'appbundle dev debug',
+    'appbundle dev profile',
     'appbundle dev release',
     'appbundle staging debug',
+    'appbundle staging profile',
     'appbundle staging release',
-    'appbundle production debug'
+    'appbundle production debug',
+    'appbundle production profile'
   ]
   if (blackListOptions.includes(buildOption)) {
     return null
