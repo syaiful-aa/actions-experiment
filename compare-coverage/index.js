@@ -59,6 +59,11 @@ try {
   core.setOutput('previous_result', JSON.stringify(previousResult));
   core.setOutput('current_result', JSON.stringify(currentResult));
 
+  let comparisonRaw = 'agriaku_coin : 46.3% (62 of 134 lines) --> 46.3% (62 of 134 lines) \nagriaku_mitra : 100.0% (11 of 11 lines) --> 100.0% (11 of 11 lines)'
+
+  core.setOutput('comparison_raw', comparisonRaw);
+  
+
 } catch (error) {
   core.setFailed(error.message);
 }
