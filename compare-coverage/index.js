@@ -33,7 +33,7 @@ try {
     ],
   };
   
-  core.setOutput("build_options", JSON.stringify(options));
+  core.setOutput("result", JSON.stringify(options));
 } catch (error) {
   core.setFailed(error.message);
 }
