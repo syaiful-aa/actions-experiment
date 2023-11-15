@@ -5,35 +5,54 @@ try {
   let options = {
     'previous_version': '2.18.0',
     'current_version': '2.19.0',
-    'previous_coverage': '72.87% (7390 of 10142 lines)',
-    'current_coverage': '62.87% (6390 of 10142 lines)',
+    'previous_summary': {
+      'covered_lines': 7390,
+      'total_lines': 10142,
+      'percentage': 72.87
+    },
+    'current_summary': {
+      'covered_lines': 6390,
+      'total_lines': 10142,
+      'percentage': 62.87
+    },
     'previous_result': [
       {
         'module': 'authentication_module',
-        'result': '90.5% (900 of 1173 lines)'
+        'covered_lines': 900,
+        'total_lines': 1173,
+        'percentage': 90.5
       },
       {
         'module': 'discovery_module',
-        'result': '86.8% (1063 of 1154 lines)'
+        'covered_lines': 1063,
+        'total_lines': 1154,
+        'percentage': 86.8
       }
     ],
     'current_result': [
       {
         'module': 'authentication_module',
-        'result': '94.5% (1109 of 1173 lines)'
+        'covered_lines': 1109,
+        'total_lines': 1173,
+        'percentage': 94.5
       },
       {
         'module': 'discovery_module',
-        'result': '84.8% (1063 of 1254 lines)'
+        'covered_lines': 1063,
+        'total_lines': 1254,
+        'percentage': 84.8
       },
       {
         'module': 'domain_module',
-        'result': '10% (100 of 1000 lines)'
+        'covered_lines': 100,
+        'total_lines': 1000,
+        'percentage': 10
       }
     ],
   };
   
   core.setOutput("result", JSON.stringify(options));
+  core.setOutput("result_raw", options);
 } catch (error) {
   core.setFailed(error.message);
 }
