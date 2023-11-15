@@ -26135,9 +26135,6 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(8705);
 
 try {
-  const command = core.getInput('command');
-
-  const action = command.split(' ')[0];
 
   let options = {
     'previous_version': '2.18.0',
@@ -26170,7 +26167,7 @@ try {
     ],
   };
   
-  core.setOutput("build_options", JSON.stringify(options));
+  core.setOutput("result", JSON.stringify(options));
 } catch (error) {
   core.setFailed(error.message);
 }
