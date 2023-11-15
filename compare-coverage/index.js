@@ -1,9 +1,6 @@
 const core = require('@actions/core');
 
 try {
-  const command = core.getInput('command');
-
-  const action = command.split(' ')[0];
 
   let options = {
     'previous_version': '2.18.0',
