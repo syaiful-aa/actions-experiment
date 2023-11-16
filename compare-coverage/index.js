@@ -1,6 +1,11 @@
 const core = require('@actions/core');
 
 try {
+  const previousData = core.getInput('previous_data');
+  const currentData = core.getInput('current_data');
+
+  console.log(`previousData: ${previousData}`);
+  console.log(`currentData: ${currentData}`);
 
   let previousSummary = {
     'covered_lines': 7390,
@@ -50,20 +55,11 @@ try {
     }
   ];
 
-  core.setOutput('previous_version','2.18.0');
-  core.setOutput('current_version','2.19.0');
+  let comparisonResult = ''
+  let currentAverageCoverage = ''
 
-  core.setOutput('previous_summary', JSON.stringify(previousSummary));
-  core.setOutput('current_summary', JSON.stringify(currentSummary));
-
-  core.setOutput('previous_result', JSON.stringify(previousResult));
-  core.setOutput('current_result', JSON.stringify(currentResult));
-
-  let comparisonRaw = 'agriaku_coin : 46.3% (62 of 134 lines) --> 46.3% (62 of 134 lines) \nagriaku_mitra : 100.0% (11 of 11 lines) --> 100.0% (11 of 11 lines)'
-
-  core.setOutput('comparison_raw', comparisonRaw);
-  
-
+  core.setOutput('comparison_result', comparisonResult);
+  core.setOutput('current_average_coverage', currentAverageCoverage);
 } catch (error) {
   core.setFailed(error.message);
 }

@@ -8,8 +8,10 @@ inputs:
     description: 'coverage data from current release'
     required: true
 outputs:
-  result:
+  comparison:
     description: 'comparison result'
+  current_average_coverage:
+    description: 'average coverage result for current release'
 runs:
   using: 'node16'
   main: 'dist/index.js'
