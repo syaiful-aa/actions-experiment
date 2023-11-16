@@ -26168,12 +26168,12 @@ function compareCoverage(previous, current) {
 
     if (item in previous.coverage) {
       const itemValue = previous.coverage[item];
-      before = `${itemValue.percentage}% <${itemValue.covered_lines} of ${itemValue.total_lines} lines>`;
+      before = `${itemValue.percentage}%, ${itemValue.covered_lines} of ${itemValue.total_lines} lines`;
     }
 
     if (item in current.coverage) {
       const itemValue = current.coverage[item];
-      after = `${itemValue.percentage}% <${itemValue.covered_lines} of ${itemValue.total_lines} lines>`;
+      after = `${itemValue.percentage}%, ${itemValue.covered_lines} of ${itemValue.total_lines} lines`;
     }
 
     result += `${item} : ${before} --> ${after}\n`;
@@ -26185,7 +26185,7 @@ function compareCoverage(previous, current) {
 }
 
 function getFormattedAverageCoverage(input) {
-  return `${input.percentage}% <${input.covered_lines} of ${input.total_lines} lines>`;
+  return `${input.percentage}%, ${input.covered_lines} of ${input.total_lines} lines`;
 }
 
 function mapInput(input) {
