@@ -13,6 +13,8 @@ try {
   const comparisonResult = compareCoverage(previousDataResult, currentDataResult);
   const currentAverageCoverage = `average coverage : ${getFormattedAverageCoverage(currentDataResult.summary)}`
 
+  console.log(comparisonResult);
+
   core.setOutput('comparison_result', comparisonResult);
   core.setOutput('current_average_coverage', currentAverageCoverage);
 } catch (error) {
