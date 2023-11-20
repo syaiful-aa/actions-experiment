@@ -5,7 +5,7 @@ try {
 
   console.log(body);
 
-  let message = ''
+  let message = '';
   core.setOutput("message", message);
 } catch (error) {
   core.setFailed(error.message);
