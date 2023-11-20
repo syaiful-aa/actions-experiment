@@ -10,9 +10,9 @@ try {
   let items = body.split(delimiter).map(x => x.trim());
   items.shift();
 
-  let message = '';
+  let message = 'Changelog:\n';
   for (const item of items) {
-      message += `${item}\n`
+      message += `- ${item}\n`
   }
 
   console.log(`output:\n${message}`);
