@@ -26135,11 +26135,22 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(8705);
 
 try {
-  const body = core.getInput('pr_body');
+  let body = core.getInput('pr_body');
+  console.log(`input:\n${body}`);
 
-  console.log(body);
+  body = body.replaceAll('\n', '').replaceAll('\r', '');
+  const delimiter = "- [x]";
+
+  let items = body.split(delimiter).map(x => x.trim());
+  items.shift();
 
   let message = '';
+  for (const item of items) {
+      message += `${item}\n`
+  }
+
+  console.log(`output:\n${message}`);
+
   core.setOutput("message", message);
 } catch (error) {
   core.setFailed(error.message);
