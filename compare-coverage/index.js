@@ -4,54 +4,42 @@ try {
   const previousData = core.getInput('previous_data');
   const currentData = core.getInput('current_data');
 
-  console.log(`previousData: ${previousData}`);
-  console.log(`currentData: ${currentData}`);
-
   const previousDataResult = mapInput(previousData)
   const currentDataResult = mapInput(currentData)
 
   const comparisonResult = compareCoverage(previousDataResult, currentDataResult);
-  const currentAverageCoverage = `average coverage : ${getFormattedAverageCoverage(currentDataResult.summary)}`
-
   console.log(comparisonResult);
-
   core.setOutput('comparison_result', comparisonResult);
-  core.setOutput('current_average_coverage', currentAverageCoverage);
 } catch (error) {
   core.setFailed(error.message);
 }
 
-
 function compareCoverage(previous, current) {
-  let result = `version: ${previous.version} --> ${current.version}\n`
-
   const concatModules = Object.keys(previous.coverage).concat(Object.keys(current.coverage));
   const allModules = concatModules.filter((item, pos) => concatModules.indexOf(item) === pos)
 
+  let table = `<table border="1"><tr><th width="auto">Modules</th><th width="auto">${previous.version}</th><th width="auto">${current.version}</th><th width="auto">+/-</th></tr>`;
   for (const item of allModules) {
-    let before = 'none';
-    let after = 'none';
-
-    if (item in previous.coverage) {
-      const itemValue = previous.coverage[item];
-      before = `${itemValue.percentage}%, (${itemValue.covered_lines} of ${itemValue.total_lines} lines)`;
-    }
-
-    if (item in current.coverage) {
-      const itemValue = current.coverage[item];
-      after = `${itemValue.percentage}%, (${itemValue.covered_lines} of ${itemValue.total_lines} lines)`;
-    }
-
-    result += `${item} : ${before} --> ${after}\n`;
+    const prevValue = previous.coverage[item] ? `${previous.coverage[item].percentage}%(${previous.coverage[item].covered_lines} of ${previous.coverage[item].total_lines} lines)` : 'N/A';
+    const currValue = current.coverage[item] ? `${current.coverage[item].percentage}%(${current.coverage[item].covered_lines} of ${current.coverage[item].total_lines} lines)` : 'N/A';
+    const diff = getFormattedComparison(current.coverage[item] ? parseFloat(current.coverage[item].percentage) : 0, previous.coverage[item] ? parseFloat(previous.coverage[item].percentage) : 0);
+    table += `<tr><td>${item}</td><td align="right">${prevValue}</td><td align="right">${currValue}</td><td align="center">${diff}</td></tr>`;
   }
-
-  result += `average coverage : ${getFormattedAverageCoverage(previous.summary)} --> ${getFormattedAverageCoverage(current.summary)}`;
-
-  return result;
+  const avText = getFormattedComparison(current.summary.percentage, previous.summary.percentage);
+  table += `<tr><td align="center">Average</td><td align="center">${previous.summary.percentage}%</td><td align="center">${current.summary.percentage}%</td><td align="center">${avText}</td></tr>`;
+  table += '</table>';
+  return table;
 }
 
-function getFormattedAverageCoverage(input) {
-  return `${input.percentage}%, (${input.covered_lines} of ${input.total_lines} lines)`;
+function getFormattedComparison(after, before) {
+  const diff = (after - before).toFixed(1);
+  if (diff > 0) {
+    return "$${\\color{green}" + `+${diff}` + "}$$";
+  } else if (diff < 0) {
+    return "$${\\color{red}" + `${diff}` + "}$$";
+  } else {
+    return diff;
+  }
 }
 
 function mapInput(input) {

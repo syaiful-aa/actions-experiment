@@ -1,0 +1,12 @@
+name: 'Release tag'
+description: 'create release tag message from PR body'
+inputs:
+  pr_body:
+    description: 'PR body'
+    required: true
+outputs:
+  message:
+    description: 'release tag message'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
