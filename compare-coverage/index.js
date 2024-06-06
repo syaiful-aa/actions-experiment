@@ -4,14 +4,35 @@ try {
   const previousData = core.getInput('previous_data');
   const currentData = core.getInput('current_data');
 
-  const previousDataResult = mapInput(previousData)
   const currentDataResult = mapInput(currentData)
+
+  if (!previousData) {
+    const initialResult = initialCoverage(currentDataResult);
+    console.log(initialResult);
+    core.setOutput('comparison_result', initialResult);
+    return;
+  }
+
+  const previousDataResult = mapInput(previousData)
 
   const comparisonResult = compareCoverage(previousDataResult, currentDataResult);
   console.log(comparisonResult);
   core.setOutput('comparison_result', comparisonResult);
 } catch (error) {
   core.setFailed(error.message);
+}
+
+function initialCoverage(current) {
+  const allModules = Object.keys(current.coverage);
+
+  let table = `<table border="1"><tr><th width="auto">Modules</th><th width="auto">${current.version}</th></tr>`;
+  for (const item of allModules) {
+    const currValue = current.coverage[item] ? `${current.coverage[item].percentage}%(${current.coverage[item].covered_lines} of ${current.coverage[item].total_lines} lines)` : "N/A";
+    table += `<tr><td>${item}</td><td align="right">${currValue}</td></tr>`;
+  }
+  table += `<tr><td align="center">Average</td><td align="center">${current.summary.percentage}%</td></tr>`;
+  table += "</table>";
+  return table;
 }
 
 function compareCoverage(previous, current) {
