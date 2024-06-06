@@ -24,7 +24,7 @@ inputs:
     description: 'whether to send a message to slack if the job fails'
     required: false
     default: false
-    
+
   # Inputs for notify on failure. 
   # If notify_on_failure is true, all inputs below must be filled in
   slack_webhook_url:

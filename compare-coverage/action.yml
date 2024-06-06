@@ -10,8 +10,6 @@ inputs:
 outputs:
   comparison_result:
     description: 'comparison result'
-  current_average_coverage:
-    description: 'formatted average coverage result for current release'
 runs:
   using: 'node16'
   main: 'dist/index.js'
