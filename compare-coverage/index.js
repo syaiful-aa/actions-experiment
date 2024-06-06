@@ -4,6 +4,11 @@ try {
   const previousData = core.getInput('previous_data');
   const currentData = core.getInput('current_data');
 
+  if (!currentData) {
+    core.setOutput('comparison_result', "empty testing input");
+    return;
+  }
+
   const currentDataResult = mapInput(currentData)
 
   if (!previousData) {
