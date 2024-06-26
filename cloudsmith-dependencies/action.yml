@@ -1,0 +1,9 @@
+name: 'cloudsmith dependencies'
+description: 'Convert dependency ref to cloudsmith'
+inputs:
+  hosted_link:
+    description: 'cloudsmith repository url'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
