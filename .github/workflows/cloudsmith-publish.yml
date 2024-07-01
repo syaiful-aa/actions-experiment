@@ -25,7 +25,7 @@ jobs:
         run: echo ${{ secrets.api_key }} | dart pub token add ${{ inputs.hosted_link }}
 
       - name: adjust pubspec
-        uses: ./cloudsmith-dependencies
+        uses: ./.github/actions/cloudsmith-dependencies
         with:
           hosted_link: ${{ inputs.hosted_link }}
 
