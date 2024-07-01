@@ -1,0 +1,35 @@
+name: Cloudsmith Publish
+
+on:
+  workflow_call:
+    inputs:
+      hosted_link:
+        required: true
+        type: string
+    secrets:
+      api_key:
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+
+      - name: authenticate cloudsmith
+        run: echo ${{ secrets.api_key }} | dart pub token add ${{ inputs.hosted_link }}
+
+      - name: adjust pubspec
+        uses: ./cloudsmith-dependencies
+        with:
+          hosted_link: ${{ inputs.hosted_link }}
+
+      - name: publish
+        run: dart pub publish --force
+
