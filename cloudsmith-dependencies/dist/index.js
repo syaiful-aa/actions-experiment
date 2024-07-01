@@ -29229,8 +29229,7 @@ function updatePublishHost(yamlObj, hostedLink) {
 }
 
 // Function to process YAML file and update dependencies
-function processYamlFile(hostedLink) {
-	const filename = 'pubspec.yaml';
+function processYamlFile(hostedLink, filename, overridePublishHost) {    
 	fs.readFile(filename, 'utf8', (err, data) => {
 		if (err) {
 			console.error(`Error reading file ${filename}: ${err}`);
@@ -29245,7 +29244,9 @@ function processYamlFile(hostedLink) {
 				updateDependency(depName, yamlObj, hostedLink);
 			});
 
-			updatePublishHost(yamlObj, hostedLink);
+			if (overridePublishHost) {
+                updatePublishHost(yamlObj, hostedLink);
+            }
 
 			// Convert YAML object back to string
 			const updatedYaml = yaml.stringify(yamlObj);
@@ -39633,11 +39634,24 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(8705);
 const github = __nccwpck_require__(118);
+const fs = __nccwpck_require__(7147);
+
 const { processYamlFile } = __nccwpck_require__(5534); 
 
 try {
   const hostedLink = core.getInput('hosted_link');
-  processYamlFile(hostedLink);
+  processYamlFile(hostedLink, 'pubspec.yaml', true);
+
+  const exampleFile = 'example/pubspec.yaml';
+  fs.stat(exampleFile, function(err, stat) {
+    if (err == null) {
+      processYamlFile(hostedLink, 'example/pubspec.yaml', false);
+    } else if (err.code === 'ENOENT') {
+      console.log('File does not exists');
+    } else {
+      console.log('unknown error: ', err.code);
+    }
+  });
 } catch (error) {
   core.setFailed(error.message);
 }

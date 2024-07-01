@@ -36,8 +36,7 @@ function updatePublishHost(yamlObj, hostedLink) {
 }
 
 // Function to process YAML file and update dependencies
-function processYamlFile(hostedLink) {
-	const filename = 'pubspec.yaml';
+function processYamlFile(hostedLink, filename, overridePublishHost) {    
 	fs.readFile(filename, 'utf8', (err, data) => {
 		if (err) {
 			console.error(`Error reading file ${filename}: ${err}`);
@@ -52,7 +51,9 @@ function processYamlFile(hostedLink) {
 				updateDependency(depName, yamlObj, hostedLink);
 			});
 
-			updatePublishHost(yamlObj, hostedLink);
+			if (overridePublishHost) {
+                updatePublishHost(yamlObj, hostedLink);
+            }
 
 			// Convert YAML object back to string
 			const updatedYaml = yaml.stringify(yamlObj);
